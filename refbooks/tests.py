@@ -80,3 +80,12 @@ class RegionsAPITestCase(APITestCase):
         id = self.refbook_1.id
         response = self.client.get(f'/refbooks/{id}/check_element/')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_refbook_element_not_exists(self) -> None:
+        """Проверяет, что при отсутствии справочника, приходит статус 404."""
+        id = self.refbook_1.id
+        code = '3'
+        value = 'Кардиолог'
+        version = self.version_1_1.version
+        response = self.client.get(f'/refbooks/{id}/check_element/?code={code}&value={value}&version={version}')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
